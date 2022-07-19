@@ -1,0 +1,8 @@
+#influxdb 정보 설정 2022-07-11 by Andrew Kim
+spring:
+    influxdb:
+        url:
+        username:
+        password:
+        database:
+        retention-policy: autogen
