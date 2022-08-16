@@ -1,5 +1,11 @@
 package com.andrew.hnt.api.service.impl;
 
-public class LoginServiceImpl {
+import org.springframework.stereotype.Service;
 
+import com.andrew.hnt.api.service.LoginService;
+
+@Service
+public class LoginServiceImpl implements LoginService {
+
+	
 }
