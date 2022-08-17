@@ -1,17 +1,31 @@
 package com.andrew.hnt.api.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Required;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.andrew.hnt.api.service.impl.LoginServiceImpl;
+import com.andrew.hnt.api.util.StringUtil;
+
 @Controller
+@RequestMapping("/login")
 public class LoginController extends DefaultController {
+	
+	@Autowired
+	private LoginServiceImpl loginService;
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
 	 * 로그인 페이지 호출
@@ -21,6 +35,7 @@ public class LoginController extends DefaultController {
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(HttpServletRequest req, HttpServletResponse res) {
+		logger.info("test");
 		return "login";
 	}
 	
@@ -69,6 +84,43 @@ public class LoginController extends DefaultController {
 			, Model model
 			) {
 		String result = ""; 
+		
+		// 필수 입력값 검증 이후 모든 필수값이 있을 경우 가입 처리 2022-08-17 by Andrew Kim
+		if(StringUtil.isEmpty(userId)) {
+			model.addAttribute("resultCode", "999");
+			model.addAttribute("resultMsg", "사용자 아이디가 없습니다.");
+			result = "joinFail";
+		} else if(StringUtil.isEmpty(userNm)) {
+			model.addAttribute("resultCode", "999");
+			model.addAttribute("resultMsg", "사용자 이름이 없습니다.");
+			result = "joinFail";
+		} else if(StringUtil.isEmpty(userPass)) {
+			model.addAttribute("resultCode", "999");
+			model.addAttribute("resultMsg", "사용자 비밀번호가 없습니다.");
+			result = "joinFail";
+		} else if(StringUtil.isEmpty(userEmail)) {
+			model.addAttribute("resultCode", "999");
+			model.addAttribute("resultMsg", "사용자 메일주소가 없습니다.");
+			result = "joinFail";
+		} else if(StringUtil.isEmpty(userTelno)) {
+			model.addAttribute("resultCode", "999");
+			model.addAttribute("resultMsg", "사용자 전화번호가 없습니다.");
+			result = "joinFail";
+		} else {
+			Map<String, Object> resultMap = new HashMap<String, Object>();
+			resultMap = loginService.insertUser(userId, userNm, userPass, userEmail, userTelno, zipNo, bscAddr, dtlAddr);
+			
+			if(null != resultMap && 0 < resultMap.size()) {
+				model.addAttribute("resultCode", String.valueOf(resultMap.get("resultCode")));
+				model.addAttribute("resultMsg", String.valueOf(resultMap.get("resultMsg")));
+				
+				if(String.valueOf(resultMap.get("resultCode")).equals("100")) {
+					result = "joinSuccess";
+				} else {
+					result = "joinFail";
+				}
+			}
+		}
 		
 		return result;
 	}
