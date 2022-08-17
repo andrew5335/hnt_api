@@ -62,6 +62,10 @@ public class LoginController extends DefaultController {
 			, @RequestParam(value = "userNm", required = true) String userNm
 			, @RequestParam(value = "userPass", required = true) String userPass
 			, @RequestParam(value = "userEmail", required = true) String userEmail
+			, @RequestParam(value = "userTelno", required = true) String userTelno
+			, @RequestParam(value = "zipNo", required = false) String zipNo
+			, @RequestParam(value = "bscAddr", required = false) String bscAddr
+			, @RequestParam(value = "dtlAddr", required = false) String dtlAddr
 			, Model model
 			) {
 		String result = ""; 
