@@ -11,9 +11,9 @@ spring:
     # mysql db 설정       
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/mybatis?useUnicode=yes&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Seoul
-        username: 
-        password: 
+        url: jdbc:mysql://localhost:3406/hnt?useUnicode=yes&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Seoul
+        username: root
+        password: ehdus77
         
 # server 설정
 server:
