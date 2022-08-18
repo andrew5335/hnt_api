@@ -46,7 +46,13 @@ public class LoginController extends DefaultController {
 	 * @return
 	 */
 	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-	public String loginProcess(HttpServletRequest req, HttpServletResponse res) {
+	public String loginProcess(
+			HttpServletRequest req
+			, HttpServletResponse res
+			, @RequestParam(name = "userId", required = true) String userId
+			, @RequestParam(name = "userPass", required = true) String userPass
+			, Model model
+			) {
 		String result = "";
 		
 		return result;
@@ -73,14 +79,14 @@ public class LoginController extends DefaultController {
 	public String joinProcess(
 			HttpServletRequest req
 			, HttpServletResponse res
-			, @RequestParam(value = "userId", required = true) String userId
-			, @RequestParam(value = "userNm", required = true) String userNm
-			, @RequestParam(value = "userPass", required = true) String userPass
-			, @RequestParam(value = "userEmail", required = true) String userEmail
-			, @RequestParam(value = "userTelno", required = true) String userTelno
-			, @RequestParam(value = "zipNo", required = false) String zipNo
-			, @RequestParam(value = "bscAddr", required = false) String bscAddr
-			, @RequestParam(value = "dtlAddr", required = false) String dtlAddr
+			, @RequestParam(name = "userId", required = true) String userId
+			, @RequestParam(name = "userNm", required = true) String userNm
+			, @RequestParam(name = "userPass", required = true) String userPass
+			, @RequestParam(name = "userEmail", required = true) String userEmail
+			, @RequestParam(name = "userTelno", required = true) String userTelno
+			, @RequestParam(name = "zipNo", required = false) String zipNo
+			, @RequestParam(name = "bscAddr", required = false) String bscAddr
+			, @RequestParam(name = "dtlAddr", required = false) String dtlAddr
 			, Model model
 			) {
 		String result = ""; 
