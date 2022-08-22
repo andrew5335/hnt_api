@@ -7,6 +7,10 @@ spring:
         password:
         database:
         retention-policy: autogen
+    mvc:
+        view:
+            prefix: /WEB-INF/jsp
+            suffix: .jsp
         
     # mysql db 설정       
     datasource:
@@ -15,11 +19,16 @@ spring:
         username: root
         password: ehdus77
         
+    jackson:
+        serialization:
+            fail-on-empty-beans: false
+        
 # server 설정
 server:
     port: 8083
-    context-path: /
-    encoding:
-        charset: UTF-8
-        enabled: true
-        force: true
+    servlet:
+        context-path: /
+        encoding:
+            charset: UTF-8
+            enabled: true
+            force: true
