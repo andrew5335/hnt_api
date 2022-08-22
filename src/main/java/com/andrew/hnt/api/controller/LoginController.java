@@ -119,6 +119,7 @@ public class LoginController extends DefaultController {
 			if(null != resultMap && 0 < resultMap.size()) {
 				model.addAttribute("resultCode", String.valueOf(resultMap.get("resultCode")));
 				model.addAttribute("resultMsg", String.valueOf(resultMap.get("resultMsg")));
+				model.addAttribute("resultInfo", resultMap);
 				
 				if(String.valueOf(resultMap.get("resultCode")).equals("100")) {
 					result = "joinSuccess";
