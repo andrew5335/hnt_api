@@ -17,7 +17,7 @@ spring:
         driver-class-name: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://localhost:3406/hnt?useUnicode=yes&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Seoul
         username: root
-        password: ehdus77
+        password: ehdus77!@
         
     jackson:
         serialization:
