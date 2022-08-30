@@ -11,6 +11,7 @@ spring:
         view:
             prefix: /WEB-INF/jsp
             suffix: .jsp
+        static-path-pattern: "/static/**"    #static file 경로 설정 -> /resources/static 아래에 static 파일들 위치
         
     # mysql db 설정       
     datasource:

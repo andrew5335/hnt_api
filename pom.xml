@@ -91,9 +91,16 @@
 		    <artifactId>snakeyaml</artifactId>
 		</dependency>
 		
-		<dependency>
+		<!-- dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
+		</dependency-->
+		
+		<!-- https://mvnrepository.com/artifact/org.apache.tomcat/jasper -->
+		<dependency>
+		    <groupId>org.apache.tomcat</groupId>
+		    <artifactId>jasper</artifactId>
+		    <version>6.0.53</version>
 		</dependency>
 		
 		<!-- DB 연동 의존성 추가 2022.08.17 by Andrew Kim -->
