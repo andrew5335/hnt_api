@@ -9,6 +9,6 @@
 
 <body>
     <p>index page</p>
-</body>
+</body
 
 </html>
