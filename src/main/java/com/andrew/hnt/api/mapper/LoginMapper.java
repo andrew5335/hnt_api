@@ -2,6 +2,7 @@ package com.andrew.hnt.api.mapper;
 
 import java.util.Map;
 
+import com.andrew.hnt.api.model.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LoginMapper {
 
-	public void insertUser(Map<String, Object> insertMap);
+	public void insertUser(UserInfo userInfo);
 }

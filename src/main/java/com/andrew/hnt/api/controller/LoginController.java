@@ -6,14 +6,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.andrew.hnt.api.model.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.andrew.hnt.api.service.impl.LoginServiceImpl;
 import com.andrew.hnt.api.util.StringUtil;
@@ -66,6 +65,7 @@ public class LoginController extends DefaultController {
 	 */
 	@RequestMapping(value = "/join", method = RequestMethod.GET)
 	public String join(HttpServletRequest req, HttpServletResponse res) {
+
 		return "join";
 	}
 	
@@ -76,60 +76,48 @@ public class LoginController extends DefaultController {
 	 * @return
 	 */
 	@RequestMapping(value = "/joinProcess", method = RequestMethod.POST)
-	public String joinProcess(
+	public @ResponseBody Map<String, Object> joinProcess(
 			HttpServletRequest req
 			, HttpServletResponse res
-			, @RequestParam(name = "userId", required = true) String userId
-			, @RequestParam(name = "userNm", required = true) String userNm
-			, @RequestParam(name = "userPass", required = true) String userPass
-			, @RequestParam(name = "userEmail", required = true) String userEmail
-			, @RequestParam(name = "userTelno", required = true) String userTelno
-			, @RequestParam(name = "zipNo", required = false) String zipNo
-			, @RequestParam(name = "bscAddr", required = false) String bscAddr
-			, @RequestParam(name = "dtlAddr", required = false) String dtlAddr
-			, Model model
+			, @RequestBody UserInfo userInfo
 			) {
-		String result = ""; 
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> joinMap = new HashMap<String, Object>();
 		
 		// 필수 입력값 검증 이후 모든 필수값이 있을 경우 가입 처리 2022-08-17 by Andrew Kim
-		if(StringUtil.isEmpty(userId)) {
-			model.addAttribute("resultCode", "999");
-			model.addAttribute("resultMsg", "사용자 아이디가 없습니다.");
-			result = "joinFail";
-		} else if(StringUtil.isEmpty(userNm)) {
-			model.addAttribute("resultCode", "999");
-			model.addAttribute("resultMsg", "사용자 이름이 없습니다.");
-			result = "joinFail";
-		} else if(StringUtil.isEmpty(userPass)) {
-			model.addAttribute("resultCode", "999");
-			model.addAttribute("resultMsg", "사용자 비밀번호가 없습니다.");
-			result = "joinFail";
-		} else if(StringUtil.isEmpty(userEmail)) {
-			model.addAttribute("resultCode", "999");
-			model.addAttribute("resultMsg", "사용자 메일주소가 없습니다.");
-			result = "joinFail";
-		} else if(StringUtil.isEmpty(userTelno)) {
-			model.addAttribute("resultCode", "999");
-			model.addAttribute("resultMsg", "사용자 전화번호가 없습니다.");
-			result = "joinFail";
+		if(StringUtil.isEmpty(userInfo.getUserId())) {
+			resultMap.put("resultCode", "999");
+			resultMap.put("resultMessage", "회원 가입 실패 - 사용자 아이디 없음");
+		} else if(StringUtil.isEmpty(userInfo.getUserNm())) {
+			resultMap.put("resultCode", "999");
+			resultMap.put("resultMessage", "회원 가입 실패 - 사용자 이름 없음");
+		} else if(StringUtil.isEmpty(userInfo.getUserPass())) {
+			resultMap.put("resultCode", "999");
+			resultMap.put("resultMessage", "회원 가입 실패 - 사용자 비밀번호 없음");
 		} else {
-			Map<String, Object> resultMap = new HashMap<String, Object>();
-			resultMap = loginService.insertUser(userId, userNm, userPass, userEmail, userTelno, zipNo, bscAddr, dtlAddr);
+
+			try {
+				joinMap = loginService.insertUser(userInfo);
+			} catch(Exception e) {
+				logger.error("Error : " + e.toString());
+				resultMap.put("resultCode", "998");
+				resultMap.put("resultMessage", "회원 가입 실패");
+			}
 			
-			if(null != resultMap && 0 < resultMap.size()) {
-				model.addAttribute("resultCode", String.valueOf(resultMap.get("resultCode")));
-				model.addAttribute("resultMsg", String.valueOf(resultMap.get("resultMsg")));
-				model.addAttribute("resultInfo", resultMap);
+			if(null != joinMap && 0 < joinMap.size()) {
 				
-				if(String.valueOf(resultMap.get("resultCode")).equals("100")) {
-					result = "joinSuccess";
+				if(String.valueOf(joinMap.get("result")).equals("success")) {
+					resultMap.put("resultCode", "200");
+					resultMap.put("resultMessage", "회원 가입 성공");
+					resultMap.put("userInfo", (UserInfo) joinMap.get("userInfo"));
 				} else {
-					result = "joinFail";
+					resultMap.put("resultCode", "999");
+					resultMap.put("resultMessage", "회원 가입 실패");
 				}
 			}
 		}
 		
-		return result;
+		return resultMap;
 	}
 	
 	/**
