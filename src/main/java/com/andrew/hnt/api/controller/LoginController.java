@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.andrew.hnt.api.model.UserInfo;
 import org.slf4j.Logger;
@@ -83,6 +84,8 @@ public class LoginController extends DefaultController {
 			) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> joinMap = new HashMap<String, Object>();
+
+		HttpSession session = req.getSession();
 		
 		// 필수 입력값 검증 이후 모든 필수값이 있을 경우 가입 처리 2022-08-17 by Andrew Kim
 		if(StringUtil.isEmpty(userInfo.getUserId())) {
@@ -95,7 +98,6 @@ public class LoginController extends DefaultController {
 			resultMap.put("resultCode", "999");
 			resultMap.put("resultMessage", "회원 가입 실패 - 사용자 비밀번호 없음");
 		} else {
-
 			try {
 				joinMap = loginService.insertUser(userInfo);
 			} catch(Exception e) {
@@ -105,11 +107,17 @@ public class LoginController extends DefaultController {
 			}
 			
 			if(null != joinMap && 0 < joinMap.size()) {
-				
 				if(String.valueOf(joinMap.get("result")).equals("success")) {
+					UserInfo joinInfo = (UserInfo)joinMap.get("userInfo");
 					resultMap.put("resultCode", "200");
 					resultMap.put("resultMessage", "회원 가입 성공");
-					resultMap.put("userInfo", (UserInfo) joinMap.get("userInfo"));
+					resultMap.put("userInfo", joinInfo);
+
+					// 회원 가입 성공 시 세션에 회원 정보 세팅
+					session.setAttribute("userId", joinInfo.getUserId());
+					session.setAttribute("userNm", joinInfo.getUserNm());
+					session.setAttribute("userTel", joinInfo.getUserTel());
+					session.setAttribute("userEmail", joinInfo.getUserEmail());
 				} else {
 					resultMap.put("resultCode", "999");
 					resultMap.put("resultMessage", "회원 가입 실패");
