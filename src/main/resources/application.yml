@@ -16,7 +16,8 @@ spring:
     # mysql db 설정       
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3406/hnt?useUnicode=yes&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Seoul
+        #url: jdbc:mysql://localhost:3406/hnt?useUnicode=yes&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Seoul
+        url: jdbc:mysql://eye2web.co.kr:3306/eye2web?useUnicode=yes&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Seoul
         username: root
         password: ehdus77!@
         

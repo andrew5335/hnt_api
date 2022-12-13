@@ -35,7 +35,7 @@ public class LoginController extends DefaultController {
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(HttpServletRequest req, HttpServletResponse res) {
-		logger.info("test");
+		logger.info("login");
 		return "login";
 	}
 	
