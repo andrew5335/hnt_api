@@ -103,7 +103,7 @@ public class LoginController extends DefaultController {
 			} catch(Exception e) {
 				logger.error("Error : " + e.toString());
 				resultMap.put("resultCode", "998");
-				resultMap.put("resultMessage", "회원 가입 실패");
+				resultMap.put("resultMessage", "회원 가입 실패 - 회원 가입 중 오류 발생");
 			}
 			
 			if(null != joinMap && 0 < joinMap.size()) {
