@@ -3,6 +3,7 @@ package com.andrew.hnt.api.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.andrew.hnt.api.model.LoginVO;
 import com.andrew.hnt.api.model.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,50 @@ public class LoginServiceImpl implements LoginService {
 	private AES256Util aes256;
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	@Override
+	public Map<String, Object> getUserInfo(LoginVO loginVO) throws Exception {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+
+		if(null != loginVO) {
+			UserInfo userInfo = new UserInfo();
+			String userPass = "";
+			userPass = loginVO.getUserPass();
+
+			if(null != userPass && !"".equals(userPass) && 0 < userPass.length()) {
+				try {
+					userPass = aes256.encrypt(userPass);
+				} catch(Exception e) {
+					e.printStackTrace();
+					logger.error("Error : 암호화 중 에러가 발생되었습니다. - " + e.toString());
+					resultMap.put("result", "fail");
+					resultMap.put("resultMsg", "암호화 중 에러가 발생되었습니다.");
+				}
+
+				loginVO.setUserPass(userPass);
+			}
+
+			try {
+				userInfo = loginMapper.getUserInfo(loginVO);
+
+				if(null != userInfo) {
+					resultMap.put("result", "success");
+					resultMap.put("resultMsg", "회원 로그인에 성공하였습니다.");
+					resultMap.put("userInfo", userInfo);
+				} else {
+					resultMap.put("result", "fail");
+					resultMap.put("resultMsg", "회원 정보가 없습니다.");
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+				logger.error("Error : 로그인 과정에서 에러가 발생되었습니다. - " + e.toString());
+			}
+		} else {
+
+		}
+
+		return resultMap;
+	}
 
 	/**
 	 * 회원 가입 처리
@@ -43,7 +88,9 @@ public class LoginServiceImpl implements LoginService {
 					userPass = aes256.encrypt(userPass);
 				} catch(Exception e) {
 					e.printStackTrace();
-					logger.error("Error : 암호화 중 에러가 발생했습니다.");
+					logger.error("Error : 암호화 중 에러가 발생되었습니다. - " + e.toString());
+					resultMap.put("result", "fail");
+					resultMap.put("resultMsg", "암호화 중 에러가 발생되었습니다.");
 				}
 
 				userInfo.setUserPass(userPass);

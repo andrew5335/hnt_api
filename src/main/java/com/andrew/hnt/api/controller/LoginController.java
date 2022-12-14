@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.andrew.hnt.api.model.LoginVO;
 import com.andrew.hnt.api.model.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,16 +47,44 @@ public class LoginController extends DefaultController {
 	 * @return
 	 */
 	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-	public String loginProcess(
+	public @ResponseBody Map<String, Object> loginProcess(
 			HttpServletRequest req
 			, HttpServletResponse res
-			, @RequestParam(name = "userId", required = true) String userId
-			, @RequestParam(name = "userPass", required = true) String userPass
-			, Model model
+			, @RequestBody LoginVO loginVO
+
 			) {
-		String result = "";
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> loginMap = new HashMap<String, Object>();
+
+		if(null != loginVO) {
+			if(null != loginVO.getUserId() && !"".equals(loginVO.getUserId()) && 0 < loginVO.getUserId().length()) {
+				if(null != loginVO.getUserPass() && !"".equals(loginVO.getUserPass()) && 0 < loginVO.getUserPass().length()) {
+					try {
+						loginMap = loginService.getUserInfo(loginVO);
+
+						if(null != loginMap && 0 < loginMap.size()) {
+							if("success".equals(String.valueOf(loginMap.get("result")))) {
+
+							} else {
+
+							}
+						}
+					} catch(Exception e) {
+
+					}
+				} else {
+					resultMap.put("resultCode", "999");
+					resultMap.put("resultMessage", "회원 로그인 실패 - 사용자 아이디 없음");
+				}
+			} else {
+				resultMap.put("resultCode", "999");
+				resultMap.put("resultMessage", "회원 로그인 실패 - 사용자 비밀번호 없음");
+			}
+		} else {
+
+		}
 		
-		return result;
+		return resultMap;
 	}
 	
 	/**

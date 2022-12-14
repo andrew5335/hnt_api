@@ -40,6 +40,9 @@
         and del_yn = 'N'
         and no = #{no}
         and user_id = #{userId}
+        <if test="userPass != null and userPass != ''">
+            and user_pass = #{userPass}
+        </if>
     </select>
 
     <insert id="insertUserInfo" parameterType="com.andrew.hnt.api.model.UserInfo">
