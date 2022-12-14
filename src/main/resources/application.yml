@@ -11,11 +11,11 @@ spring:
         view:
             prefix: /WEB-INF/jsp
             suffix: .jsp
-        static-path-pattern: "/static/**"    #static file 경로 설정 -> /resources/static 아래에 static 파일들 위치
+        #static-path-pattern: "/static/**"    #static file 경로 설정 -> /resources/static 아래에 static 파일들 위치
         
     # mysql db 설정       
     datasource:
-        driver-class-name: com.mysql.cj.jdbc.Driver
+        driver-class-name: com.mysql.jdbc.Driver
         #url: jdbc:mysql://localhost:3406/hnt?useUnicode=yes&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Seoul
         url: jdbc:mysql://eye2web.co.kr:3306/eye2web?useUnicode=yes&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Seoul
         username: root

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import com.andrew.hnt.api.model.LoginVO;
 import com.andrew.hnt.api.model.UserInfo;
+import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class LoginController extends DefaultController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(HttpServletRequest req, HttpServletResponse res) {
 		logger.info("login");
-		return "login";
+		return "login/login";
 	}
 	
 	/**
@@ -56,6 +57,8 @@ public class LoginController extends DefaultController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> loginMap = new HashMap<String, Object>();
 
+		HttpSession session = req.getSession();
+
 		if(null != loginVO) {
 			if(null != loginVO.getUserId() && !"".equals(loginVO.getUserId()) && 0 < loginVO.getUserId().length()) {
 				if(null != loginVO.getUserPass() && !"".equals(loginVO.getUserPass()) && 0 < loginVO.getUserPass().length()) {
@@ -64,9 +67,21 @@ public class LoginController extends DefaultController {
 
 						if(null != loginMap && 0 < loginMap.size()) {
 							if("success".equals(String.valueOf(loginMap.get("result")))) {
+								UserInfo userInfo = new UserInfo();
+								userInfo = (UserInfo) loginMap.get("userInfo");
+								resultMap.put("resultCode", "200");
+								resultMap.put("resultMessage", "회원 로그인 성공");
+								resultMap.put("userInfo", userInfo);
 
+								if(null != userInfo) {
+									session.setAttribute("userId", userInfo.getUserId());
+									session.setAttribute("userNm", userInfo.getUserNm());
+									session.setAttribute("userEmail", userInfo.getUserEmail());
+									session.setAttribute("userTel", userInfo.getUserTel());
+								}
 							} else {
-
+								resultMap.put("resultCode", "999");
+								resultMap.put("resultMessage", "회원 로그인 실패 - 사용자 정보 없음");
 							}
 						}
 					} catch(Exception e) {
@@ -95,8 +110,9 @@ public class LoginController extends DefaultController {
 	 */
 	@RequestMapping(value = "/join", method = RequestMethod.GET)
 	public String join(HttpServletRequest req, HttpServletResponse res) {
+		logger.info("join");
 
-		return "join";
+		return "login/join";
 	}
 	
 	/**
