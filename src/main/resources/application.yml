@@ -18,8 +18,8 @@ spring:
         driver-class-name: com.mysql.jdbc.Driver
         #url: jdbc:mysql://localhost:3406/hnt?useUnicode=yes&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Seoul
         url: jdbc:mysql://eye2web.co.kr:3306/eye2web?useUnicode=yes&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Seoul
-        username: root
-        password: ehdus77!@
+        username: eye2web
+        password: zhdtns77
         
     jackson:
         serialization:

@@ -6,14 +6,14 @@
     <select id="getUserList" parameterType="java.util.HashMap" resultType="com.andrew.hnt.api.model.UserInfo">
         select
             no
-            , user_nm
-            , user_tel
-            , user_email
-            , user_id
-            , user_pass
-            , user_grade
-            , use_yn
-            , del_yn
+            , user_nm as userNm
+            , user_tel as userTel
+            , user_email as userEmail
+            , user_id as userId
+            , user_pass as userPass
+            , user_grade as userGrade
+            , use_yn as useYn
+            , del_yn as delYn
         from
             hnt_user
         where 1 = 1
@@ -22,30 +22,29 @@
         order by no desc
     </select>
 
-    <select id="getUserInfo" parameterType="java.util.HashMap" resultType="com.andrew.hnt.api.model.UserInfo">
+    <select id="getUserInfo" parameterType="com.andrew.hnt.api.model.LoginVO" resultType="com.andrew.hnt.api.model.UserInfo">
         select
             no
-                , user_nm
-                , user_tel
-                , user_email
-                , user_id
-                , user_pass
-                , user_grade
-                , use_yn
-                , del_yn
+            , user_nm as userNm
+            , user_tel as userTel
+            , user_email as userEmail
+            , user_id as userId
+            , user_pass as userPass
+            , user_grade as userGrade
+            , use_yn as useYn
+            , del_yn as delYn
         from
             hnt_user
         where 1 = 1
         and use_yn = 'Y'
         and del_yn = 'N'
-        and no = #{no}
         and user_id = #{userId}
         <if test="userPass != null and userPass != ''">
             and user_pass = #{userPass}
         </if>
     </select>
 
-    <insert id="insertUserInfo" parameterType="com.andrew.hnt.api.model.UserInfo">
+    <insert id="insertUser" parameterType="com.andrew.hnt.api.model.UserInfo">
         insert into hnt_user
             (user_nm, user_tel, user_email, user_id, user_pass, user_grade, use_yn, del_yn, inst_id, inst_dtm, mdf_id, mdf_dtm)
         values

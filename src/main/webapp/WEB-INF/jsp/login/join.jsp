@@ -15,7 +15,7 @@
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="/static/css/templatemo_main.css">
+        <link rel="stylesheet" href="/css/templatemo_main.css">
 
         <script src="/js/jquery.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
@@ -33,9 +33,9 @@
             <div class="form-horizontal templatemo-signin-form">
                 <div class="form-group">
                     <div class="col-md-12">
-                        <label for="userName" class="col-sm-2 control-label">이름</label>
+                        <label for="userNm" class="col-sm-2 control-label">이름</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="userName" placeholder="이름">
+                            <input type="text" class="form-control" id="userNm" placeholder="이름">
                         </div>
                     </div>
                 </div>

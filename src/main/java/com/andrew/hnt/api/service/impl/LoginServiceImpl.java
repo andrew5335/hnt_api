@@ -35,6 +35,7 @@ public class LoginServiceImpl implements LoginService {
 
 			if(null != userPass && !"".equals(userPass) && 0 < userPass.length()) {
 				try {
+					aes256 = new AES256Util();
 					userPass = aes256.encrypt(userPass);
 				} catch(Exception e) {
 					e.printStackTrace();
@@ -44,6 +45,9 @@ public class LoginServiceImpl implements LoginService {
 				}
 
 				loginVO.setUserPass(userPass);
+				logger.info("userpass : " + loginVO.getUserPass());
+				logger.info("userid : " + loginVO.getUserId());
+
 			}
 
 			try {
@@ -53,6 +57,7 @@ public class LoginServiceImpl implements LoginService {
 					resultMap.put("result", "success");
 					resultMap.put("resultMsg", "회원 로그인에 성공하였습니다.");
 					resultMap.put("userInfo", userInfo);
+					logger.info("userid : " + userInfo.getUserId());
 				} else {
 					resultMap.put("result", "fail");
 					resultMap.put("resultMsg", "회원 정보가 없습니다.");
@@ -77,14 +82,20 @@ public class LoginServiceImpl implements LoginService {
 	@Override
 	public Map<String, Object> insertUser(UserInfo userInfo) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		aes256 = new AES256Util();
 
 		if(null != userInfo) {
+			userInfo.setDelYn("N");
+			userInfo.setUseYn("Y");
+			userInfo.setUserGrade("U");
+			userInfo.setInstId("hnt");
+			userInfo.setMdfId("hnt");
+
 			String userPass = userInfo.getUserPass();
 
 			// 사용자 비밀번호는 암호화하여 입력
 			if(null != userPass && !"".equals(userPass) && 0 < userPass.length()) {
 				try {
+					aes256 = new AES256Util();
 					userPass = aes256.encrypt(userPass);
 				} catch(Exception e) {
 					e.printStackTrace();

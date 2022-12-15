@@ -1,5 +1,6 @@
 package com.andrew.hnt.api.mqtt.common;
 
+import com.andrew.hnt.api.service.impl.MqttServiceImpl;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -22,6 +23,17 @@ public class MQTT implements MqttCallback {
 	private static MemoryPersistence persistence;
 	private static MqttConnectOptions connOpts;
 	private static String topic;
+
+	private static String MqttServer1 = "tcp://hntnas.diskstation.me:1883";
+	private static String MqttServer2 = "";
+	private static String client_id = "";
+	private static String userName = "hnt1";
+	private static String password = "abcde";
+	private static String topicStr = "#";
+	private static String msg = "";
+	private static String readMsg = "";
+
+	private MqttServiceImpl mqttService;
 	
 	public MQTT(String broker, String client_id, String userName, String password) {
 		this.Broker = broker;
@@ -110,7 +122,9 @@ public class MQTT implements MqttCallback {
 	public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
 		//System.out.println("===== Message Arrived : " + new String(mqttMessage.getPayload(), "UTF-8"));
 		System.out.println("===== Topic : " + topic + " | Value : " + mqttMessage.toString());
-		
+
+		mqttService = new MqttServiceImpl();
+		mqttService.receiveData(topic + "@" + mqttMessage.toString());
 		// 여기서 API 호출을 통해 기기 자동 연결 및 Influx DB로 데이터 입력 처리 추가 필요
 
 	}
@@ -118,6 +132,8 @@ public class MQTT implements MqttCallback {
 	@Override
 	public void connectionLost(Throwable cause) {
 		System.out.println("===== Lost Connection - " + cause.getCause());
+		MQTT read = new MQTT(MqttServer1, client_id, userName, password);
+		read.init(topicStr);
 	}
 	
 	@Override

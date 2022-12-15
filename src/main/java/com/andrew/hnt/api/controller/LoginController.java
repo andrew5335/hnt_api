@@ -36,8 +36,13 @@ public class LoginController extends DefaultController {
 	 * @return
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(HttpServletRequest req, HttpServletResponse res) {
+	public String login(
+			HttpServletRequest req
+			, HttpServletResponse res
+	        ) {
+
 		logger.info("login");
+
 		return "login/login";
 	}
 	
@@ -54,6 +59,7 @@ public class LoginController extends DefaultController {
 			, @RequestBody LoginVO loginVO
 
 			) {
+
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> loginMap = new HashMap<String, Object>();
 
@@ -67,13 +73,13 @@ public class LoginController extends DefaultController {
 
 						if(null != loginMap && 0 < loginMap.size()) {
 							if("success".equals(String.valueOf(loginMap.get("result")))) {
-								UserInfo userInfo = new UserInfo();
-								userInfo = (UserInfo) loginMap.get("userInfo");
+								UserInfo userInfo = (UserInfo) loginMap.get("userInfo");
 								resultMap.put("resultCode", "200");
 								resultMap.put("resultMessage", "회원 로그인 성공");
 								resultMap.put("userInfo", userInfo);
 
 								if(null != userInfo) {
+									logger.info(userInfo.getUserId());
 									session.setAttribute("userId", userInfo.getUserId());
 									session.setAttribute("userNm", userInfo.getUserNm());
 									session.setAttribute("userEmail", userInfo.getUserEmail());
@@ -109,7 +115,11 @@ public class LoginController extends DefaultController {
 	 * @return
 	 */
 	@RequestMapping(value = "/join", method = RequestMethod.GET)
-	public String join(HttpServletRequest req, HttpServletResponse res) {
+	public String join(
+			HttpServletRequest req
+			, HttpServletResponse res
+	        , Model model) {
+
 		logger.info("join");
 
 		return "login/join";
@@ -127,6 +137,7 @@ public class LoginController extends DefaultController {
 			, HttpServletResponse res
 			, @RequestBody UserInfo userInfo
 			) {
+
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> joinMap = new HashMap<String, Object>();
 
@@ -180,8 +191,15 @@ public class LoginController extends DefaultController {
 	 * @return
 	 */
 	@RequestMapping(value = "/findUserId", method = RequestMethod.GET)
-	public String findUserId(HttpServletRequest req, HttpServletResponse res) {
-		return "findUserId";
+	public String findUserId(
+			HttpServletRequest req
+			, HttpServletResponse res
+			, Model model
+	        ) {
+
+		String result = "";
+
+		return result;
 	}
 	
 	/**
@@ -191,9 +209,13 @@ public class LoginController extends DefaultController {
 	 * @return
 	 */
 	@RequestMapping(value = "/findUserIdProcess", method = RequestMethod.POST)
-	public String findUserIdProcess(HttpServletRequest req, HttpServletResponse res) {
-		String result = "";
-		
-		return result;
+	public @ResponseBody Map<String, Object> findUserIdProcess(
+			HttpServletRequest req
+			, HttpServletResponse res
+	        ) {
+
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+
+		return resultMap;
 	}
 }

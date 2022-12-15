@@ -16,4 +16,6 @@ public class UserInfo {
     public String userGrade;    // 사용자 등급 - A : Admin / U : User
     public String useYn;    // 사용 여부
     public String delYn;    // 삭제 여부
+    public String instId;    // 입력자 아이디
+    public String mdfId;    // 수정자 아이디
 }

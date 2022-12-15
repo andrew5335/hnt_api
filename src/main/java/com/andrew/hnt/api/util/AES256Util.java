@@ -8,7 +8,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class AES256Util {
 
     public static String alg = "AES/CBC/PKCS5Padding";
-    private final String key = "ehdus7790836242ab3113011651537";
+    private final String key = "ehdus7790836242a";
     private final String iv = key.substring(0, 16); // 16byte
 
     public String encrypt(String text) throws Exception {
