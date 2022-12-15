@@ -1,5 +1,7 @@
 package com.andrew.hnt.api.mqtt.common;
 
+import com.andrew.hnt.api.mqtt.MqttApplicationRunner;
+import com.andrew.hnt.api.service.MqttService;
 import com.andrew.hnt.api.service.impl.MqttServiceImpl;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
@@ -11,6 +13,8 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 public class MQTT implements MqttCallback {
 	
@@ -34,7 +38,7 @@ public class MQTT implements MqttCallback {
 	private static String readMsg = "";
 
 	private MqttServiceImpl mqttService;
-	
+
 	public MQTT(String broker, String client_id, String userName, String password) {
 		this.Broker = broker;
 		this.Client_ID = client_id;
@@ -125,6 +129,9 @@ public class MQTT implements MqttCallback {
 
 		mqttService = new MqttServiceImpl();
 		mqttService.receiveData(topic + "@" + mqttMessage.toString());
+		//runner = new MqttApplicationRunner();
+		//runner.receivedData(topic + "@" + mqttMessage.toString());
+
 		// 여기서 API 호출을 통해 기기 자동 연결 및 Influx DB로 데이터 입력 처리 추가 필요
 
 	}

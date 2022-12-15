@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import com.andrew.hnt.api.model.LoginVO;
 import com.andrew.hnt.api.model.UserInfo;
+import com.andrew.hnt.api.service.LoginService;
 import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ import com.andrew.hnt.api.util.StringUtil;
 public class LoginController extends DefaultController {
 	
 	@Autowired
-	private LoginServiceImpl loginService;
+	private LoginService loginService;
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 

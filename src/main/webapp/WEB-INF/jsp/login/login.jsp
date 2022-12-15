@@ -14,7 +14,7 @@
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="/static/css/templatemo_main.css">
+    <link rel="stylesheet" href="/css/templatemo_main.css">
 
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
@@ -59,7 +59,7 @@
           <div class="form-group">
             <div class="col-md-12">
               <div class="col-sm-offset-2 col-sm-10" align="right">
-                <input type="submit" id="login" name="login" value="LOGIN" class="btn btn-default">
+                <input type="submit" id="login" name="login" value="로그인" class="btn btn-default">
                 <input type="button" id="joinBtn" name="joinBtn" value="회원가입" class="btn btn-default">
               </div>
             </div>

@@ -15,7 +15,7 @@
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width">
-  <link rel="stylesheet" href="/static/css/templatemo_main.css">
+  <link rel="stylesheet" href="/css/templatemo_main.css">
 </head>
 <body>
 <div class="navbar navbar-inverse" role="navigation">
@@ -65,81 +65,12 @@
       </ol>
       <h1>Main</h1>
       <p>초기화면입니다.</p>
-
-      <!--div class="margin-bottom-30">
-        <div class="row">
-          <div class="col-md-12">
-            <ul class="nav nav-pills">
-              <li class="active"><a href="#">Home <span class="badge">42</span></a></li>
-              <li class="active"><a href="#">Profile <span class="badge">126</span></a></li>
-              <li class="active"><a href="#">Messages <span class="badge">14</span></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="templatemo-alerts">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="alert alert-success alert-dismissible" role="alert">
-                  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                  <strong>Success!</strong> Maecenas non lorem sed elit molestie tincidunt.
-                </div>
-                <div class="alert alert-info alert-dismissible" role="alert">
-                  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                  Sed in molestie lectus. Curabitur non est neque. Maecenas id luctus ligula.
-                </div>
-                <div class="alert alert-warning alert-dismissible" role="alert">
-                  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                  Vestibulum tincidunt libero urna, ut dignissim purus accumsan nec.
-                </div>
-                <div class="alert alert-danger alert-dismissible" role="alert">
-                  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                  Mauris dignissim ante eu arcu ultricies, at sodales orci aliquet.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="templatemo-progress">
-            <div class="list-group">
-              <a href="#" class="list-group-item active">
-                <h4 class="list-group-item-heading">Latest Data</h4>
-                <p class="list-group-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel adipiscing quam. Maecenas vehicula rhoncus magna, vitae lacinia sem auctor a. Vestibulum aliquam, nisl nec luctus volutpat, turpis orci posuere arcu, eget consectetur quam nunc ac arcu.</p>
-              </a>
-              <a href="#" class="list-group-item">
-                <h4 class="list-group-item-heading">Older Data</h4>
-                <p class="list-group-item-text">Maecenas in facilisis nisi. Proin gravida nunc vel justo vestibulum, quis adipiscing velit faucibus. Sed a hendrerit orci. Nunc ut bibendum eros, at varius urna. Integer cursus condimentum dui vitae sagittis. Curabitur at vehicula nunc. Praesent at sem non nisl pellentesque placerat.</p>
-              </a>
-            </div>
-            <div class="progress">
-              <div class="progress-bar progress-bar-success" style="width: 35%">
-                <span class="sr-only">35% Complete (success)</span>
-              </div>
-              <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 20%">
-                <span class="sr-only">20% Complete (warning)</span>
-              </div>
-              <div class="progress-bar progress-bar-danger" style="width: 10%">
-                <span class="sr-only">10% Complete (danger)</span>
-              </div>
-            </div>
-            <div class="progress">
-              <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
-                <span class="sr-only">45% Complete</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div-->
       <div class="templatemo-panels">
         <div class="row">
           <div class="col-md-6 col-sm-6 margin-bottom-30">
             <div class="panel panel-success">
               <div class="panel-heading">센서 챠트</div>
-              <canvas id="templatemo-line-chart" height="120" width="500"></canvas>
+              <canvas id="sensorChart" height="120" width="500"></canvas>
             </div>
             <span class="btn btn-success"><a href="data-visualization.html">More Charts</a></span>
           </div>
@@ -354,7 +285,7 @@
   }
 
   window.onload = function(){
-    var ctx_line = document.getElementById("templatemo-line-chart").getContext("2d");
+    var ctx_line = document.getElementById("sensorChart").getContext("2d");
     window.myLine = new Chart(ctx_line).Line(lineChartData, {
       responsive: true
     });
