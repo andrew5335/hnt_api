@@ -1,10 +1,13 @@
 package com.andrew.hnt.api.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.andrew.hnt.api.model.LoginVO;
 import com.andrew.hnt.api.model.UserInfo;
+import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,32 @@ public class LoginServiceImpl implements LoginService {
 	private AES256Util aes256;
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	@Override
+	public Map<String, Object> getUserList() throws Exception {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+
+		List<UserInfo> userList = new ArrayList<UserInfo>();
+
+		try {
+			userList = loginMapper.getUserList();;
+
+			if(null != userList && 0 < userList.size()) {
+				resultMap.put("result", "success");
+				resultMap.put("resultMessage", "사용자 목록 조회 성공했습니다.");
+				resultMap.put("userList", userList);
+			} else {
+				resultMap.put("result", "fail");
+				resultMap.put("resultMessage", "사용자 목록 조회 실패했습니다.");
+			}
+		} catch(Exception e) {
+			logger.error("Error : " + e.toString());
+			resultMap.put("result", "fail");
+			resultMap.put("resultMessage", "사용자 목록 조회 과정에서 오류가 발생되었습니다. - " + e.toString());
+		}
+
+		return resultMap;
+	}
 
 	@Override
 	public Map<String, Object> getUserInfo(LoginVO loginVO) throws Exception {

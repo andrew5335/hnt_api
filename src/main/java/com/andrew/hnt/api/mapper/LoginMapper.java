@@ -1,5 +1,6 @@
 package com.andrew.hnt.api.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import com.andrew.hnt.api.model.LoginVO;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Repository;
 public interface LoginMapper {
 
 	public UserInfo getUserInfo(LoginVO loginVO);
+
+	public List<UserInfo> getUserList();
 
 	public void insertUser(UserInfo userInfo);
 }

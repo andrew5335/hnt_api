@@ -23,17 +23,26 @@ public class MqttServiceImpl implements MqttService {
 
     public SensorVO sensorVO1 = new SensorVO();
     public static ArrayList<String> data = new ArrayList<String>();
+    public static String title = "";
 
-    public String setSensorValue(ArrayList<String> data) throws Exception {
+    public String setSensorValue(ArrayList<String> data, SensorVO sensorVO) throws Exception {
         this.data = data;
-        logger.info("sensor data : " + data.toString());
+        this.title = sensorVO.getUserId();
+        //logger.info("sensor data : " + data.toString());
+        //logger.info("userId : " + sensorVO.getUserId());
+        //logger.info("sensorId : " + sensorVO.getSensorId());
 
         return data.toString();
     }
 
     @Override
-    public String getData() throws Exception {
-        return data.toString();
+    public Map<String, Object> getData() throws Exception {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        //logger.info("getData : " + data.toString());
+        resultMap.put("data", data.toString());
+        resultMap.put("title", title);
+
+        return resultMap;
     }
 
     public void receiveData(String str) {
@@ -80,7 +89,7 @@ public class MqttServiceImpl implements MqttService {
 
                         //this.setSensorValue(sensorVO);
                         data.add(sensorVO.getSensorValue());
-                        this.setSensorValue(data);
+                        this.setSensorValue(data, sensorVO);
 
                     } catch(Exception e) {
                         e.printStackTrace();

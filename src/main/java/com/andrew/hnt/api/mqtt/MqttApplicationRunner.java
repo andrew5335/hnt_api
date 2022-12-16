@@ -45,7 +45,7 @@ public class MqttApplicationRunner implements ApplicationRunner {
 		read.init(topic);
 		//readMsg = read.getTopic();
 		//System.out.println("===== readMsg : " + readMsg);
-		//sleep(5000);
+		//sleep(1000);
 	}
 
 	void sleep(int time) {

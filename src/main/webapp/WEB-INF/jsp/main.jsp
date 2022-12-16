@@ -70,7 +70,7 @@
           <div class="col-md-6 col-sm-6 margin-bottom-30">
             <div class="panel panel-success">
               <div class="panel-heading">센서 챠트</div>
-              <canvas id="sensorChart" height="120" width="500"></canvas>
+              <canvas id="sensorChart" height="400" width="500"></canvas>
             </div>
             <span class="btn btn-success"><a href="data-visualization.html">More Charts</a></span>
           </div>
@@ -87,21 +87,18 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>김형주</td>
-                    <td>andrew</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>홍길동</td>
-                    <td>abc</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>전우치</td>
-                    <td>efg</td>
-                  </tr>
+                  <c:choose>
+                    <c:when test="${empty userList}"></c:when>
+                    <c:otherwise>
+                      <c:forEach var="item" items="${userList}">
+                        <tr>
+                          <td>${item.no}</td>
+                          <td>${item.userNm}</td>
+                          <td>${item.userId}</td>
+                        </tr>
+                      </c:forEach>
+                    </c:otherwise>
+                  </c:choose>
                   </tbody>
                 </table>
               </div>
@@ -109,9 +106,10 @@
             <span class="btn btn-primary"><a href="tables.html">사용자 관리</a></span>
           </div>
         </div>
-        <div class="row">
+
+        <!--<div class="row">
           <div class="col-md-6 col-sm-6">
-            <!-- Nav tabs -->
+
             <ul class="nav nav-tabs" role="tablist" id="templatemo-tabs">
               <li class="active"><a href="#home" role="tab" data-toggle="tab">tab1</a></li>
               <li><a href="#profile" role="tab" data-toggle="tab">tab2</a></li>
@@ -119,7 +117,7 @@
               <li><a href="#settings" role="tab" data-toggle="tab">tab4</a></li>
             </ul>
 
-            <!-- Tab panes -->
+
             <div class="tab-content">
               <div class="tab-pane fade in active" id="home">
                 <ul class="list-group">
@@ -176,7 +174,7 @@
                   <a href="#" class="list-group-item">ㅇㅇㅇ</a>
                 </div>
               </div>
-            </div> <!-- tab-content -->
+            </div>
           </div>
           <div class="col-md-6 col-sm-6">
             <div class="panel-group" id="accordion">
@@ -224,7 +222,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
@@ -252,43 +250,123 @@
 
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-<script src="/js/Chart.min.js"></script>
+<!--script src="/js/Chart.min.js"></script-->
 <script src="/js/templatemo_script.js"></script>
-<script type="text/javascript">
-  // Line chart
-  var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
-  var lineChartData = {
-    labels : ["January","February","March","April","May","June","July"],
-    datasets : [
-      {
-        label: "My First dataset",
-        fillColor : "rgba(220,220,220,0.2)",
-        strokeColor : "rgba(220,220,220,1)",
-        pointColor : "rgba(220,220,220,1)",
-        pointStrokeColor : "#fff",
-        pointHighlightFill : "#fff",
-        pointHighlightStroke : "rgba(220,220,220,1)",
-        data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-      },
-      {
-        label: "My Second dataset",
-        fillColor : "rgba(151,187,205,0.2)",
-        strokeColor : "rgba(151,187,205,1)",
-        pointColor : "rgba(151,187,205,1)",
-        pointStrokeColor : "#fff",
-        pointHighlightFill : "#fff",
-        pointHighlightStroke : "rgba(151,187,205,1)",
-        data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-      }
-    ]
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.9.0"></script>
 
+<script type="text/javascript">
+  var chartColors = {
+    red: 'rgb(255, 99, 132)',
+    orange: 'rgb(255, 159, 64)',
+    yellow: 'rgb(255, 205, 86)',
+    green: 'rgb(75, 192, 192)',
+    blue: 'rgb(54, 162, 235)',
+    purple: 'rgb(153, 102, 255)',
+    grey: 'rgb(201, 203, 207)'
+  };
+
+  var xval = 0;
+  var yval = 0;
+  var titleStr = "";
+
+  function getData() {
+    $.ajax({
+      url: '/main/getData',
+      async: true,
+      type: 'POST',
+      dataType: 'json',
+      contentType: 'application/json',
+      success: function(result) {
+        if(result.resultCode == "200") {
+          yval = result.dataVal;
+          xval = result.num;
+          titleStr = result.titleStr;
+        }
+      },
+      error: function(result) {
+
+      }
+    });
+
+    return yval;
+    //return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
   }
 
-  window.onload = function(){
-    var ctx_line = document.getElementById("sensorChart").getContext("2d");
-    window.myLine = new Chart(ctx_line).Line(lineChartData, {
-      responsive: true
+  function onRefresh(chart) {
+    var now = Date.now();
+
+    chart.data.datasets.forEach(function(dataset) {
+      dataset.data.push({
+        x: now,
+        //x: xval,
+        y: getData()
+        //y: yval
+      });
     });
+  }
+
+  var color = Chart.helpers.color;
+  var config = {
+    type: 'line',
+    data: {
+      datasets: [{
+        label: titleStr,
+        backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
+        borderColor: chartColors.red,
+        fill: false,
+        lineTension: 0,
+        //borderDash: [8, 4],
+        data: []
+      }
+      /**, {
+        label: titleStr,
+        backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
+        borderColor: chartColors.blue,
+        fill: false,
+        cubicInterpolationMode: 'monotone',
+        data: []
+      }**/
+       ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Line chart'
+      },
+      scales: {
+        xAxes: [{
+          type: 'realtime',
+          realtime: {
+            duration: 20000,
+            refresh: 3000,
+            delay: 2000,
+            onRefresh: onRefresh
+          }
+        }],
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'value'
+          }
+        }]
+      },
+      tooltips: {
+        mode: 'nearest',
+        intersect: false
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: false
+      }
+    }
+  };
+
+  window.onload = function() {
+    var ctx = document.getElementById('sensorChart').getContext('2d');
+    window.myChart = new Chart(ctx, config);
+    config.type = 'line';
   };
 
   $('#myTab a').click(function (e) {

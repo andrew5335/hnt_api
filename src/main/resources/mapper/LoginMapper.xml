@@ -20,6 +20,7 @@
         and use_yn = 'Y'
         and del_yn = 'N'
         order by no desc
+        limit 10
     </select>
 
     <select id="getUserInfo" parameterType="com.andrew.hnt.api.model.LoginVO" resultType="com.andrew.hnt.api.model.UserInfo">

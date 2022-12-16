@@ -8,6 +8,6 @@ import java.util.Map;
 @Service
 public interface MqttService {
 
-    public String getData() throws Exception;
+    public Map<String, Object> getData() throws Exception;
 
 }

@@ -12,4 +12,6 @@ public interface LoginService {
 	public Map<String, Object> insertUser(UserInfo userInfo) throws Exception;
 
 	public Map<String, Object> getUserInfo(LoginVO loginVO) throws Exception;
+
+	public Map<String, Object> getUserList() throws Exception;
 }
