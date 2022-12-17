@@ -46,6 +46,30 @@ public class LoginController extends DefaultController {
 
 		return "login/login";
 	}
+
+	@RequestMapping(value = "/logout",method = RequestMethod.GET)
+	public String logout(
+			HttpServletRequest req
+			, HttpServletResponse res
+			, @RequestParam(name = "userId", required = true) String userId
+	        ) {
+		String result = "";
+
+		HttpSession session = req.getSession();
+
+		if(null != session) {
+			if(null != String.valueOf(session.getAttribute("userId")) && !"".equals(String.valueOf(session.getAttribute("userId")))) {
+				if(userId.equals(String.valueOf(session.getAttribute("userId")))) {
+					session.removeAttribute("userId");
+					session.invalidate();
+
+					result = "redirect:/login/login";
+				}
+			}
+		}
+
+		return result;
+	}
 	
 	/**
 	 * 로그인 처리 요청
@@ -83,6 +107,7 @@ public class LoginController extends DefaultController {
 									logger.info(userInfo.getUserId());
 									session.setAttribute("userId", userInfo.getUserId());
 									session.setAttribute("userNm", userInfo.getUserNm());
+									session.setAttribute("userGrade", userInfo.getUserGrade());
 									session.setAttribute("userEmail", userInfo.getUserEmail());
 									session.setAttribute("userTel", userInfo.getUserTel());
 								}

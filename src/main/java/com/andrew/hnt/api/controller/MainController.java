@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.andrew.hnt.api.model.DataVO;
 import com.andrew.hnt.api.model.SensorVO;
 import com.andrew.hnt.api.model.UserInfo;
 import com.andrew.hnt.api.mqtt.common.MQTT;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -68,7 +70,8 @@ public class MainController extends DefaultController {
 
 				model.addAttribute("userId", session.getAttribute("userId"));
 				model.addAttribute("userNm", session.getAttribute("userNm"));
-				result = "main";
+				model.addAttribute("userGrade", session.getAttribute("userGrade"));
+				result = "main/main";
 			} else {
 				result = "redirect:/login/login";
 			}
@@ -80,36 +83,59 @@ public class MainController extends DefaultController {
 	}
 
 	@RequestMapping(value = "/getData", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> getData() {
+	public @ResponseBody Map<String, Object> getData(
+			HttpServletRequest req
+			, HttpServletResponse res
+			, @RequestBody DataVO dataVO
+	        ) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		String sensorValue = "";
 		String title = "";
+		String sensorId = "";
 
-		try {
-			mqttService = new MqttServiceImpl();
-			dataMap = mqttService.getData();
+		HttpSession session = req.getSession();
 
-			if(null != dataMap && 0 < dataMap.size()) {
-				//logger.info("data : " + sensorValue);
-				title = String.valueOf(dataMap.get("title"));
-				sensorValue = String.valueOf(dataMap.get("data"));
-				sensorValue = sensorValue.replace("[", "");
-				sensorValue = sensorValue.replace("]", "");
-				String[] sensorVal = sensorValue.split(",");
-				int sensorValLength = sensorVal.length;
-				String sensorData = sensorVal[sensorValLength - 1];
-				//logger.info("sensor data : " + sensorData);
+		if(null != session) {
+			if(null != String.valueOf(session.getAttribute("userId")) && !"".equals(String.valueOf(session.getAttribute("userId")))) {
+				String userId = dataVO.getUserId();
 
-				resultMap.put("resultCode", "200");
-				resultMap.put("dataVal", sensorData);
-				resultMap.put("num", sensorValLength);
-				resultMap.put("titleStr", title);
+				try {
+					mqttService = new MqttServiceImpl();
+					dataMap = mqttService.getData();
+
+					if(null != dataMap && 0 < dataMap.size()) {
+						//logger.info("data : " + sensorValue);
+						title = String.valueOf(dataMap.get("title"));
+						sensorId = String.valueOf(dataMap.get("sensorId"));
+
+						logger.info("sensorId : " + sensorId);
+
+						if(null != sensorId && !"".equals(sensorId)) {
+							if("hntTestId".equals(sensorId)) {
+								sensorValue = String.valueOf(dataMap.get("data"));
+								sensorValue = sensorValue.replace("[", "");
+								sensorValue = sensorValue.replace("]", "");
+								String[] sensorVal = sensorValue.split(",");
+								int sensorValLength = sensorVal.length;
+								String sensorData = sensorVal[sensorValLength - 1];
+								//logger.info("sensor data : " + sensorData);
+
+								resultMap.put("resultCode", "200");
+								resultMap.put("dataVal", sensorData);
+								resultMap.put("num", sensorValLength);
+								resultMap.put("titleStr", title);
+							}
+						}
+					}
+				} catch(Exception e) {
+					e.printStackTrace();
+					logger.error("Error : " + e.toString());
+				}
 			}
-		} catch(Exception e) {
-			e.printStackTrace();
-			logger.error("Error : " + e.toString());
 		}
+
+
 
 		return resultMap;
 	}

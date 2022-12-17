@@ -18,6 +18,9 @@
   <link rel="stylesheet" href="/css/templatemo_main.css">
 </head>
 <body>
+<input type="hidden" id="userId" name="userId" value="${userId}" />
+<input type="hidden" id="userNm" name="userNm" value="${userNm}" />
+<input type="hidden" id="userGrade" name="userGrade" value="${userGrade}" />
 <div class="navbar navbar-inverse" role="navigation">
   <div class="navbar-header">
     <div class="logo"><h1>H&T Technology</h1></div>
@@ -44,24 +47,24 @@
           <i class="fa fa-database"></i> 관리 메뉴보기 <div class="pull-right"><span class="caret"></span></div>
         </a>
         <ul class="templatemo-submenu">
-          <li><a href="tables.html">사용자 관리</a></li>
+          <li><a href="../tables.html">사용자 관리</a></li>
           <li><a href="#">센서 관리</a></li>
           <li><a href="#">IO 관리</a></li>
           <li><a href="#">챠트 관리</a></li>
         </ul>
       </li>
-      <li><a href="data-visualization.html"><i class="fa fa-cubes"></i>센서 정보</a></li>
+      <li><a href="/chart/chart"><i class="fa fa-cubes"></i>센서 정보</a></li>
       <!--li><a href="maps.html"><i class="fa fa-map-marker"></i>Maps</a></li>
       <li><a href="tables.html"><i class="fa fa-users"></i>Manage Users</a></li-->
-      <li><a href="preferences.html"><i class="fa fa-cog"></i>기본 설정</a></li>
-      <li><a href="javascript:;" data-toggle="modal" data-target="#confirmModal"><i class="fa fa-sign-out"></i>로그아웃</a></li>
+      <li><a href="/admin/admin"><i class="fa fa-cog"></i>기본 설정</a></li>
+      <li><a href="" data-toggle="modal" data-target="#confirmModal"><i class="fa fa-sign-out"></i>로그아웃</a></li>
     </ul>
   </div><!--/.navbar-collapse -->
 
   <div class="templatemo-content-wrapper">
     <div class="templatemo-content">
       <ol class="breadcrumb">
-        <li><a href="index.html">Main</a></li>
+        <li><a href="/main/main">Main</a></li>
       </ol>
       <h1>Main</h1>
       <p>초기화면입니다.</p>
@@ -72,7 +75,7 @@
               <div class="panel-heading">센서 챠트</div>
               <canvas id="sensorChart" height="400" width="500"></canvas>
             </div>
-            <span class="btn btn-success"><a href="data-visualization.html">More Charts</a></span>
+            <span class="btn btn-success"><a href="../data-visualization.html">More Charts</a></span>
           </div>
           <div class="col-md-6 col-sm-6 margin-bottom-30">
             <div class="panel panel-primary">
@@ -103,7 +106,7 @@
                 </table>
               </div>
             </div>
-            <span class="btn btn-primary"><a href="tables.html">사용자 관리</a></span>
+            <span class="btn btn-primary"><a href="../tables.html">사용자 관리</a></span>
           </div>
         </div>
 
@@ -235,7 +238,7 @@
           <h4 class="modal-title" id="myModalLabel">로그아웃 하시겠습니까?</h4>
         </div>
         <div class="modal-footer">
-          <a href="sign-in.html" class="btn btn-primary">Yes</a>
+          <a href="/login/logout?userId=${userId}" class="btn btn-primary">Yes</a>
           <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
         </div>
       </div>
@@ -270,12 +273,18 @@
   var xval = 0;
   var yval = 0;
   var titleStr = "";
+  var loginUserId = $('#userId').val();
+
+  var sendData = {
+    userId: loginUserId
+  }
 
   function getData() {
     $.ajax({
       url: '/main/getData',
       async: true,
       type: 'POST',
+      data: JSON.stringify(sendData),
       dataType: 'json',
       contentType: 'application/json',
       success: function(result) {
